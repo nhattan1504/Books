@@ -8,5 +8,9 @@ module.exports.checkLogin=function(req,res,next){
     if(!user){
         res.redirect('/auth/login');
     }
+    console.log(user);
+    
+    res.locals.user=user;
     next();
 }
+

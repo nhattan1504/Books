@@ -2,7 +2,6 @@ const express = require("express");
 const app = express();
 //const shortid = require('shortid');
 const bodyParser = require('body-parser');
-
 var cookieParser=require('cookie-parser');
 //var db=require('./db');
 var authMiddle=require('./validates/auth.middleware')
