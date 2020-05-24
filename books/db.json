@@ -19,7 +19,7 @@
       "email": "1@gmail.com",
       "password": "123123",
       "isAdmin": true,
-      "wrongLoginCount": 5
+      "wrongLoginCount": 0
     },
     {
       "name": "Tân",
@@ -71,9 +71,5 @@
     }
   ],
   "accountBlock": [
-    {
-      "user": "Thịnh đz",
-      "blockAt": 1590306219926
-    }
   ]
 }

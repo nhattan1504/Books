@@ -17,7 +17,7 @@ module.exports.postLogin = async function (req, res) {
     });
     return;
   }
-  console.log(user);
+  // console.log(user);
   
   
   var hash = await bcrypt.hash(req.body.password, 10);
@@ -46,6 +46,8 @@ module.exports.postLogin = async function (req, res) {
         return;
       }
   }
-  res.cookie("userid", user.id);
+  res.cookie("userid", user.id,{
+    signed:true
+  });
   res.redirect("/users");
 };

@@ -15,7 +15,7 @@ html
               a(class="nav-link" href="/users") Users
             li(class="nav-item active ml-2")
               a(class="nav-link" href="/transaction") Transaction
-          if user
-            p=user.name
+        if usr
+          p=usr.name
     .container
       block content

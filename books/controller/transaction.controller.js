@@ -13,7 +13,7 @@ module.exports.index = function (req, res) {
     }else{
         idUser = db.get('transaction').filter({userId:admin.id}).value();
     }
-    console.log(idUser);
+    // console.log(idUser);
     var listBook = [];
     for (var i of idBook) {
         listBook.push((db.get('book').find({ id: i }).value()).title);
