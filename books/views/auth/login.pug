@@ -1,0 +1,12 @@
+extends ../layout.pug
+block content
+    if error
+        each err in error
+            .alert.alert-danger=err
+    h1 Login
+    form(action="/auth/login" method="POST")
+        Label(for="email") Email
+        input#name.form-control(name='email' type='email' class="form-control mr-2", value=values ? values.email :'')
+        Label(for="password") Password
+        input#favor.form-control(type="text" name="password" class="form-control mr-2" style="margin-bottom: 20px" )
+        button(class="btn btn-primary") Login

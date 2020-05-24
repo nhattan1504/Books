@@ -1,0 +1,72 @@
+{
+  "book": [
+    {
+      "title": "Người đẹp ngủ trong rừng",
+      "description": "noob",
+      "id": "BlH8sXO1y"
+    },
+    {
+      "title": "Người đẹp và quái vật",
+      "description": "Kể về quái vật và người đẹp",
+      "id": "RKig9r55P"
+    }
+  ],
+  "user": [
+    {
+      "name": "Thịnh đz",
+      "favorite": "read comic",
+      "id": "q0S7NOgDG",
+      "email": "1@gmail.com",
+      "password": "4297f44b13955235245b2497399d7a93",
+      "isAdmin": true
+    },
+    {
+      "name": "Tân",
+      "favorite": "coding",
+      "id": "AdbrJfQZd",
+      "email": "2@gmail.com",
+      "password": "4297f44b13955235245b2497399d7a93",
+      "isAdmin": false
+    },
+    {
+      "name": "Thắng",
+      "favorite": "game",
+      "id": "SSULSoo2Y",
+      "email": "3@gmail.com",
+      "password": "4297f44b13955235245b2497399d7a93",
+      "isAdmin": false
+    }
+  ],
+  "transaction": [
+    {
+      "userId": "q0S7NOgDG",
+      "bookId": "BlH8sXO1y",
+      "id": "hJzQZv0Kg",
+      "isCompleted": false
+    },
+    {
+      "userId": "q0S7NOgDG",
+      "bookId": "RKig9r55P",
+      "id": "1VZii7ldC",
+      "isCompleted": false
+    },
+    {
+      "userId": "AdbrJfQZd",
+      "bookId": "BlH8sXO1y",
+      "id": "1A7mOnv1z",
+      "isCompleted": false
+    },
+    {
+      "userId": "AdbrJfQZd",
+      "bookId": "RKig9r55P",
+      "id": "cJ-B_l8is",
+      "isCompleted": false
+    },
+    {
+      "userId": "SSULSoo2Y",
+      "bookId": "BlH8sXO1y",
+      "id": "V6HKCaSvx",
+      "isCompleted": false
+    }
+  ]
+}

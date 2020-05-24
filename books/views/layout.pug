@@ -1,0 +1,19 @@
+html 
+  head 
+    link(rel="stylesheet", href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css")
+  body
+    header
+      nav(class="d-flex" style="margin-bottom:40px")
+        img(src="/image/download.png")
+        div(class="collapse navbar-collapse d-flex" id="navbarNav" style="justify-content: flex-end;padding-right: 30px;font-size: 20px;")
+          ul(class="navbar-nav" style="flex-direction:row")
+            li(class="nav-item active ml-2")
+              a(class="nav-link") Home
+            li(class="nav-item active ml-2")
+              a(class="nav-link" href="/books") Books
+            li(class="nav-item active ml-2")
+              a(class="nav-link" href="/users") Users
+            li(class="nav-item active ml-2")
+              a(class="nav-link" href="/transaction") Transaction
+    .container
+      block content

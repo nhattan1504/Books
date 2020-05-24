@@ -1,0 +1,12 @@
+extends ../layout.pug
+
+block content
+  if errors
+    each err in errors
+      .alert.alert-danger=err
+  form(action="/users/create" method="POST")
+     Label(for="name") Name
+     input#name.form-control(name='name' type='text' class="form-control mr-2")
+     Label(for="favor") Favorite
+     input#favor.form-control(type="text" name="favorite" class="form-control mr-2" value=values ? values.favor : '' )
+     button(class="btn btn-primary") Create

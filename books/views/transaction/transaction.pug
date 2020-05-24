@@ -1,0 +1,28 @@
+extends ../layout 
+block content 
+  h1 Transaction
+  a.btn.btn-primary(href='/transaction/create') New
+  if errors
+    each err in errors
+      .alert.alert-danger=err
+  a(href='/')
+  table.table 
+    tr
+      th Tiêu đề
+      th Tên người mượn 
+      th Hoàn thành
+    
+    //- each value,i in user
+    //-       each val,j in book
+    //-         each valuee,k in transaction
+    //-           if i==j && j==k
+    each value,i in user
+      each val,j in book
+        each valuee,k in transaction  
+          if i==j && j==k
+            tr
+              td=val
+              td=value
+              td
+                a(href='/transaction/'+valuee+'/completed') Hoan thanh
+            

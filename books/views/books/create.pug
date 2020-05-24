@@ -1,0 +1,8 @@
+extends ../layout 
+block content
+  form(action='/books/create' method='Post')
+    Label Title
+    input( name='title' type='text' class="form-control")
+    Label Desciption
+    input( name='description' type='text' class='form-control')
+    button.btn-primary(class="btn btn-primary") Create

@@ -1,0 +1,18 @@
+extends ../layout.pug
+
+block content
+  h1 List Users
+  a.btn.btn-primary(href="/users/create" method="post") New
+  table.table 
+    tr
+      th Tên 
+      th Action
+    each val in user
+      tr 
+        td=val.name 
+        td
+          a.btn.btn-primary(href=('/users/'+ val.id)) Chi tiết
+          span &nbsp;
+          a.btn.btn-primary(href=('/users/'+ val.id+'/delete')) Delete
+          span &nbsp;
+          a.btn.btn-primary(href=('/users/'+ val.id+'/updated')) Change

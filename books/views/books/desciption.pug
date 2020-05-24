@@ -1,0 +1,11 @@
+extends ../layout 
+block content
+  table.table(style="border: none")
+    tr
+      th Tiêu đề
+      th Nội dung 
+    tr 
+      td 
+        p=book.title 
+      td
+        p=book.description 

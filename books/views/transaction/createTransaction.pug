@@ -1,0 +1,14 @@
+extends ../layout 
+block content 
+
+  h1 Create transaction
+  form(action="/transaction/create", method="post")
+    Label Danh sach nguoi dung
+     select(name="name" class="custom-select mr-2") 
+        each variable in user
+          option(value=variable.name) #{variable.name}
+    Label Danh sach sach 
+      select(name="title" class="custom-select mr-2")
+        each val in book
+          option(value=val.title) #{val.title}
+    button(class="btn btn-primary ml-2") Create

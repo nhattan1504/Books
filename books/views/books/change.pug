@@ -1,0 +1,7 @@
+extends ../layout 
+block content  
+
+  form(action="/books/"+book.id+"/updated" method="POST")
+    Label New title
+    input(type='text' name='title' id=book.id class="form-control")
+    button.btn-primary(class="btn btn-primary") Update
