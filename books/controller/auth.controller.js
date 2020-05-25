@@ -2,7 +2,9 @@
 var db = require("../db");
 // var md5 = require("md5");
 var bcrypt = require("bcrypt");
-
+var sgMail = require('@sendgrid/mail');
+require('dotenv').config();
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 module.exports.login = function (req, res) {
   res.render("./auth/login.pug");
 };
@@ -22,7 +24,7 @@ module.exports.postLogin = async function (req, res) {
   var now = new Date();
   var acc = db.get("accountBlock").find({ user: user.name }).value();
   //check user was block
-  if (acc) { 
+  if (acc) {
     if (now.getTime() - acc.blockAt < 3000) {
       res.render("./auth/login.pug", { error: ["account is block"] });
     } else if (now.getTime() - acc.blockAt >= 3000) {
@@ -42,10 +44,25 @@ module.exports.postLogin = async function (req, res) {
     res.render("./auth/login.pug", { error: ["account is block"] });
   } else {
     if (!isCorrectPassword) {
-      db.get("user")
+      await db.get("user")
         .find({ name: user.name })
         .assign({ wrongLoginCount: user.wrongLoginCount + 1 })
         .write();
+      if (user.wrongLoginCount == 3) {
+        const msg = {
+          to: 'nhattan1585@gmail.com',
+          from: 'nhattan1585@gmail.com',
+          subject: 'Account was block',
+          text: 'account is block because you wrong password than 3 time ',
+          html: '<strong>and easy to do anywhere, even with Node.js</strong>',
+        };
+        sgMail.send(msg, function (err) {
+          if (err) {
+            console.error("cant send email");
+            console.log(err);
+          }
+        });
+      }
       if (user.wrongLoginCount == 4) {
         var time = new Date();
         db.get("accountBlock")

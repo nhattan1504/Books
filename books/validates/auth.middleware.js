@@ -13,7 +13,6 @@ module.exports.checkLogin=function(req,res,next){
     //console.log(user);
     res.locals.usr=user;
     //console.log(res.locals.user);
-    
     next();
 }
 
