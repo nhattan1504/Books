@@ -10,40 +10,34 @@ module.exports.postLogin = async function (req, res) {
   //console.log(req.body.email);
   var mail = req.body.email;
   var user = db.get("user").find({ email: mail }).value();
-  var now = new Date();
-  var acc = db.get("accountBlock").find({ user: user.name }).value();
-  console.log(acc);
-  console.log(now.getTime()-acc.blockAt);
-  
-  if (acc && now.getTime - acc.blockAt < 3000) {
-    res.render("./auth/login.pug", { error: ["account is block"] });
-  } else if (acc && now.getTime - acc.blockAt >= 3000) {
-    db.get("accountBlock").remove({ user: user.name }).value();
-    db.get("user")
-        .find({ name: user.name })
-        .assign({ wrongLoginCount: 0 })
-        .write();
-    
-  }
   if (!user) {
+    // check email login is exist
     res.render("./auth/login.pug", {
       error: ["Email dont exist"],
       values: req.body,
     });
     return;
   }
-  console.log(user);
 
+  var now = new Date();
+  var acc = db.get("accountBlock").find({ user: user.name }).value();
+  //check user was block
+  if (acc) { 
+    if (now.getTime() - acc.blockAt < 3000) {
+      res.render("./auth/login.pug", { error: ["account is block"] });
+    } else if (now.getTime() - acc.blockAt >= 3000) {
+      db.get("accountBlock").remove({ user: user.name }).value();
+      db.get("user")
+        .find({ name: user.name })
+        .assign({ wrongLoginCount: 0 })
+        .write();
+    }
+  }
+
+  // console.log(user);
   var hash = await bcrypt.hash(req.body.password, 10);
-  // tai vi day la bat dong bo nen ham bcrypt no chua chayj
-  // ban hoc async await chua, minh hocj roi
-  // gio doan nay minh dung async await nha ok k ban ?
-  // ok de minh thu
-  //console.log(hash);
-
   var isCorrectPassword = await bcrypt.compare(user.password, hash);
   //console.log(isCorrectPassword);
-
   if (user.wrongLoginCount > 4) {
     res.render("./auth/login.pug", { error: ["account is block"] });
   } else {
@@ -65,6 +59,8 @@ module.exports.postLogin = async function (req, res) {
       return;
     }
   }
-  res.cookie("userid", user.id);
+  res.cookie("userid", user.id, {
+    signed: true,
+  });
   res.redirect("/users");
 };
