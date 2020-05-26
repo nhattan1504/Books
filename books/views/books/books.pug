@@ -2,18 +2,30 @@ extends ../layout
 block content  
   h1 Best of book ever
   a.btn.btn-primary(href='/books/create') New
-  table.table
-    tr
-      th Tiêu đề
-      th Action 
+  .row.row-cols-1.row-cols-md-3
     each val in book
-      tr
-        td=val.title
-        span &nbsp;
-        td 
-          a.btn.btn-primary(href=('/books/'+ val.id)) Chi tiết
-          span &nbsp;
-          a.btn.btn-primary(href=('/books/'+ val.id+'/delete')) Delete
-          span &nbsp;
-          a.btn.btn-primary(href=('/books/'+ val.id+'/updated')) Change
-
+      .col.mb-4
+        .card.h-100
+          img.card-img-top(src=val.image, alt='...')
+          .card-body
+            h5.card-title=val.title
+            p.card-text
+              | This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.
+          .button_all(style="display:flex;justify-content: center;margin-bottom: 10px;")
+            a.btn.btn-primary(href=('/books/'+ val.id)) Chi tiết
+            span &nbsp;
+            a.btn.btn-primary(href=('/books/'+ val.id+'/delete')) Delete
+            span &nbsp;
+            a.btn.btn-primary(href=('/books/'+ val.id+'/updated')) Change
+  nav(aria-label='Page navigation example')
+    ul.pagination.justify-content-center
+      li.page-item.disabled
+        button.page-link(href='#', tabindex='-1', aria-disabled='true') Previous
+      li.page-item
+        a.page-link(href='/books?page='+1) 1
+      li.page-item
+        a.page-link(href=('/books?page='+2)) 2
+      li.page-item
+        a.page-link(href=('/books?page='+3)) 3
+      li.page-item
+        button.page-link(href='#') Next

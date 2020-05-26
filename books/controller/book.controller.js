@@ -2,8 +2,12 @@ var db= require('../db');
 const shortid = require('shortid');
 
 module.exports.index=function(req,res){
+    var page=parseInt(req.query.page) ||1;
+    var perPage=8;
+    var start= perPage*(page-1);
+    var end=perPage* page;
     res.render('./books/books.pug', {
-        book: db.get('book').value()
+        book: db.get('book').value().slice(start,end)
     });
 };
 

@@ -4,8 +4,7 @@ var db = require('../db');
 var shortid = require('shortid');
 
 module.exports.index = function (req, res) {
-    var admin=db.get('user').find({id:req.cookies.userid}).value();
-    //console.log(id);
+    var admin=db.get('user').find({id:req.signedCookies.userid}).value();
     var idUser;
     var idBook = db.get('transaction').map('bookId').value();
     if(admin.isAdmin){
