@@ -1,6 +1,10 @@
 // var express=require('express');
 var db = require("../db");
+var shortid=require('shortid');
 // var md5 = require("md5");
+var book=require('../model/book.model');
+var users=require('../model/user.model');
+var accountBlock=require('../model/accountBlock.model');
 var bcrypt = require("bcrypt");
 var sgMail = require('@sendgrid/mail');
 require('dotenv').config();
@@ -11,7 +15,8 @@ module.exports.login = function (req, res) {
 module.exports.postLogin = async function (req, res) {
   //console.log(req.body.email);
   var mail = req.body.email;
-  var user = db.get("user").find({ email: mail }).value();
+  var user = await users.findOne({ email: mail });
+  
   if (!user) {
     // check email login is exist
     res.render("./auth/login.pug", {
@@ -22,17 +27,21 @@ module.exports.postLogin = async function (req, res) {
   }
 
   var now = new Date();
-  var acc = db.get("accountBlock").find({ user: user.name }).value();
+  var acc = await accountBlock.findOne({user:user.name});
+  
+  //db.get("accountBlock").find({ user: user.name }).value();
   //check user was block
-  if (acc) {
+  if (acc !== null) {
     if (now.getTime() - acc.blockAt < 3000) {
       res.render("./auth/login.pug", { error: ["account is block"] });
     } else if (now.getTime() - acc.blockAt >= 3000) {
-      db.get("accountBlock").remove({ user: user.name }).value();
-      db.get("user")
-        .find({ name: user.name })
-        .assign({ wrongLoginCount: 0 })
-        .write();
+      accountBlock.deleteOne({user:user.name});
+      //db.get("accountBlock").remove({ user: user.name }).value();
+      user.findOneAndUpdate({name:user.name},{wrongLoginCount:0});
+      // db.get("user")
+      //   .find({ name: user.name })
+      //   .assign({ wrongLoginCount: 0 })
+      //   .write();
     }
   }
 
@@ -44,10 +53,11 @@ module.exports.postLogin = async function (req, res) {
     res.render("./auth/login.pug", { error: ["account is block"] });
   } else {
     if (!isCorrectPassword) {
-      await db.get("user")
-        .find({ name: user.name })
-        .assign({ wrongLoginCount: user.wrongLoginCount + 1 })
-        .write();
+      await users.findOneAndUpdate({name:user.name},{wrongLoginCount:user.wrongLoginCount+1});
+      // await db.get("user")
+      //   .find({ name: user.name })
+      //   .assign({ wrongLoginCount: user.wrongLoginCount + 1 })
+      //   .write();
       if (user.wrongLoginCount == 3) {
         const msg = {
           to: 'nhattan1585@gmail.com',
@@ -65,9 +75,10 @@ module.exports.postLogin = async function (req, res) {
       }
       if (user.wrongLoginCount == 4) {
         var time = new Date();
-        db.get("accountBlock")
-          .push({ user: user.name, blockAt: time.getTime() })
-          .write();
+        accountBlock.insertMany([{ user: user.name, blockAt: time.getTime() }]);
+        // db.get("accountBlock")
+        //   .push({ user: user.name, blockAt: time.getTime() })
+        //   .write();
       }
       res.render("./auth/login.pug", {
         error: ["Password is wrong"],
@@ -76,8 +87,21 @@ module.exports.postLogin = async function (req, res) {
       return;
     }
   }
-  res.cookie("userid", user.id, {
-    signed: true,
+   await res.cookie("userid", user._id, {
+    signed: true
   });
   res.redirect("/users");
+};
+
+module.exports.signUp=function(req,res){
+  res.render('./auth/signup.pug');
+};
+
+module.exports.postSignup= async function(req,res){
+  req.body.isAdmin=false;
+  req.body.avatarUrl="https://cdn1.iconfinder.com/data/icons/user-pictures/100/unknown-512.png";
+  req.body.wrongLoginCount=0;
+  // console.log(req.body);
+  await users.insertMany([req.body]);
+  res.redirect('/auth/login');
 };

@@ -1,0 +1,14 @@
+extends ../layout.pug
+
+block content
+    table.table 
+        tr
+            th Avatar
+            th Name
+            th Favorite
+        tr
+            td
+                img(src=value.avatarUrl style="width:32px")
+            td=value.name
+            td=value.favorite
+    a(class="btn btn-primary", href="/profile/update") Update

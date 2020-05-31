@@ -1,0 +1,15 @@
+extends ../layout.pug
+block content
+  if errors
+    each err in errors
+      .alert.alert-danger=err
+  form(action="/auth/signup" method="POST")
+     Label(for="name") Name
+     input#name.form-control(name='name' type='text' class="form-control mr-2")
+     Label(for="favor") Favorite
+     input#favor.form-control(type="text" name="favorite" class="form-control mr-2" value=values ? values.favorite : '' )
+     Label(for="email") Email
+     input#favor.form-control(type="text" name="email" class="form-control mr-2" value=values ? values.favorite : '' )
+     Label(for="password") Password
+     input#favor.form-control(type="text" name="password" class="form-control mr-2" value=values ? values.favorite : '' )
+     button(class="btn btn-primary") Create

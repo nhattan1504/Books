@@ -1,50 +1,73 @@
 var db = require('../db');
-
+var user=require('../model/user.model');
+var transaction=require('../model/transaction.model');
+var book=require('../model/book.model');
 //app.set('view engines', 'pug');
 var shortid = require('shortid');
 
-module.exports.index = function (req, res) {
-    var admin=db.get('user').find({id:req.signedCookies.userid}).value();
+module.exports.index = async function (req, res) {
+    var admin= await user.findOne({_id:req.signedCookies.userid});
     var idUser;
-    var idBook = db.get('transaction').map('bookId').value();
+    //var idBook = db.get('transaction').map('bookId').value();
+    var idBook = await transaction.find();
+    var listIdBook=idBook.map(function(x){
+        return x.bookId;
+    })
+    console.log(listIdBook);
+    console.log(admin);
     if(admin.isAdmin){
-        idUser = db.get('transaction').map('userId').value();
+        idUser= await transaction.find()
+        idUser.map(x=> x.userId);
+        //idUser = db.get('transaction').map('userId').value();
     }else{
-        idUser = db.get('transaction').filter({userId:admin.id}).value();
+        idUser = await transaction.find({userId:admin._id});
+        //idUser = db.get('transaction').filter({userId:admin.id}).value();
     }
-    // console.log(idUser);
+    console.log(idUser);
     var listBook = [];
     for (var i of idBook) {
-        listBook.push((db.get('book').find({ id: i }).value()).title);
+        let aBook= await book.find({_id:i});
+        listBook.push(aBook.title);
+        // listBook.push((db.get('book').find({ id: i }).value()).title);
     }
     
-    //console.log(listBook);
+    console.log(listBook);
     var listUser = [];
     
     if(admin.isAdmin==true){
         for (let i of idUser) {
-            listUser.push(db.get('user').find({ id:i }).value().name);
+            let aUser= await user.find({_id:i});            
+            listUser.push(aUser.name);
+            // listUser.push(db.get('user').find({ id:i }).value().name);
         }
     }
     else{
         //console.log(idUser);
         
         for ( var i of idUser){
-            console.log(db.get('user').find({id:i.userId}).value());
-            listUser.push(db.get('user').find({id:i.userId}).value().name);
+            //console.log(db.get('user').find({id:i.userId}).value());
+            let anUser=user.find({_id:i});
+            listUser.push(anUser.name);
+            //listUser.push(db.get('user').find({id:i.userId}).value().name);
         }
     }
+    //console.log(listUser);
+    
     // console.log(db.get('transaction').map('id').value());
     res.render('./transaction/transaction.pug', {
         user: listUser,
         book: listBook,
-        transaction: db.get('transaction').map('id').value()
+        transaction: await transaction.find() 
+        //db.get('transaction').map('id').value()
     });
 };
 
 module.exports.create = function (req, res) {
     res.render('./transaction/createTransaction.pug', {
-        user: db.get('user').value(), book: db.get('book').value()
+        user:user.find(),
+         //db.get('user').value(), 
+        book: book.find() 
+        //db.get('book').value()
     });
 };
 

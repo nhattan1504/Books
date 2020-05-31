@@ -1,0 +1,15 @@
+extends ../layout.pug
+
+block content
+  form(action="/profile/update" method="POST" enctype="multipart/form-data")
+    .form-group
+        Label(for="name") Name
+        input#name.form-control(name='name' type='text' class="form-control mr-2" value=value.name)
+    .form-group
+        Label(for="favor") Favorite
+        input#favor.form-control(type="text" name="favorite" class="form-control mr-2" value=value.favorite)
+    .form-group
+        Label(for="favor") Avatar
+        input#favor.form-control-file(type="file" name="avatar")
+    button(class="btn btn-primary") Update
+     

@@ -3,12 +3,17 @@ const app = express();
 //const shortid = require('shortid');
 const bodyParser = require('body-parser');
 var cookieParser=require('cookie-parser');
+var mongoose = require('mongoose');
+require('dotenv').config();
+mongoose.connect(process.env.MONGO_URL);
+
 //var db=require('./db');
 var authMiddle=require('./validates/auth.middleware')
 var booksRoute=require('./routes/books.route');
 var usersRoute=require('./routes/users.route');
 var transactionRoute=require('./routes/transaction.route');
 var authRoute=require('./routes/auth.route');
+var profileRoute=require('./routes/profile.route');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.set('view engines', 'pug');
@@ -23,8 +28,10 @@ app.get('/',(req,res,next)=>{
     //console.log(req.cookies);
     res.render('layout.pug');
 })
+
+app.use('/profile',authMiddle.checkLogin,profileRoute);
 app.use('/auth',authRoute);
-app.use('/books',authMiddle.checkLogin,booksRoute);
+app.use('/books',booksRoute);
 app.use('/users',authMiddle.checkLogin,usersRoute);
 app.use('/transaction',authMiddle.checkLogin,transactionRoute);
 

@@ -3,7 +3,7 @@ var route=express.Router();
 
 var controller=require('../controller/user.controller');
 var countCookie=require('../validates/cookie.middleware');
-var validateCreate=require('../validates/user.middleware');
+var validate=require('../validates/user.middleware');
 
 route.get('',controller.index);
 
@@ -13,7 +13,7 @@ route.get('',controller.index);
 
 route.get('/create',countCookie.count,controller.create);
 
-route.post('/create',validateCreate.validateCreate,controller.createPost);
+route.post('/create',validate.validateCreate,controller.createPost);
 
 route.get('/:id/delete',controller.delete);
 
