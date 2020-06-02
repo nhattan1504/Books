@@ -1,15 +1,12 @@
 
-var book= require('../model/book.model')
+var book= require('../../model/book.model');
 module.exports.index= async function(req,res){
-    var page=parseInt(req.query.page) ||1;
-    var perPage=8;
-    var start= perPage*(page-1);
-    var end=perPage* page;
-    var listbooks= await book.find();
-    var books= listbooks.slice(start,end);
-    res.render('./books/books.pug', {
-        book: books
-    });
+    // var page=parseInt(req.query.page) ||1;
+    // var perPage=8;
+    // var start= perPage*(page-1);
+    // var end=perPage* page;
+    var books= await book.find();
+    res.json(books);
 };
 
 module.exports.create=function(req,res){
@@ -26,9 +23,7 @@ module.exports.createPost= async function(req,res){
 module.exports.get= async function(req,res){
     var id = req.params.id;
     var idbook = await book.findById({_id:id});
-    res.render('./books/desciption.pug', {
-        book: idbook
-    });
+    res.json(idbook);
 };
 
 module.exports.delete=function(req,res){
@@ -42,13 +37,11 @@ module.exports.delete=function(req,res){
 module.exports.updated= async function(req,res){
     var id = req.params.id;
     var idbook = await book.findById({_id:id});
-    res.render('./books/change.pug', {
-        book: idbook
-    });
+    res.json(idbook);
 };
 
 module.exports.updatedPost= async function(req,res){
     var id=req.params.id;
     await book.findByIdAndUpdate({_id:id},req.body);
-    res.redirect('/books');
+    res.json(req.body);
 };

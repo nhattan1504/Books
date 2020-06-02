@@ -14,6 +14,8 @@ var usersRoute=require('./routes/users.route');
 var transactionRoute=require('./routes/transaction.route');
 var authRoute=require('./routes/auth.route');
 var profileRoute=require('./routes/profile.route');
+
+var apiBookRoute=require('./api/routes/book.route');
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })) // for parsing application/x-www-form-urlencoded
 app.set('view engines', 'pug');
@@ -35,6 +37,7 @@ app.use('/books',booksRoute);
 app.use('/users',authMiddle.checkLogin,usersRoute);
 app.use('/transaction',authMiddle.checkLogin,transactionRoute);
 
+app.use('/api/books',apiBookRoute);
 
 
 
